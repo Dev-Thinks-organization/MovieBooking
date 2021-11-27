@@ -37,19 +37,6 @@ class PromoCode(models.Model):
         return self.code
 
 
-class Booking(models.Model):
-    movie = models.ForeignKey(
-        Movie, on_delete=models.CASCADE, null=True, blank=True)
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE, null=True, blank=True)
-    show = models.ForeignKey(
-        Show, on_delete=models.CASCADE, null=True, blank=True)
-    booking = models.TextField(null=True, blank=True)
-
-    def __str__(self):
-        return self.booking
-
-
 class Bookings(models.Model):
     movie = models.ForeignKey(
         Movie, on_delete=models.CASCADE, null=True, blank=True)
@@ -65,17 +52,11 @@ class Bookings(models.Model):
 class Seat(models.Model):
     number = models.IntegerField()
     show = models.ForeignKey(Show, on_delete=models.CASCADE)
-    booking = models.ForeignKey(
-        Booking, on_delete=models.CASCADE, null=True, blank=True)
+
     isBooked = models.BooleanField(default=False)
 
     def __str__(self):
         return "{},{}".format(self.number, self.show.movie.name)
 
 
-class BookedSeat(models.Model):
-    seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return "{} | {}".format(self.seat.number, self.booking.movie.name)
