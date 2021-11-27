@@ -1,0 +1,16 @@
+{% extends 'Base.html' %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+
+<title>Sign Up </title>
+
+<div>
+    <form action="{% url 'users:register' %}" method="post">
+    {% csrf_token %}
+        
+        <input name="email" type="email" placeholder="email">
+        <input name="password" type="passowrd" placeholder="password">
+        <button type="submit">Submit </button>
+    </form>
+</div>
+{% endblock content %}
