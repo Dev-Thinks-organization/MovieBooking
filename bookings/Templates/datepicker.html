@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+
+
+{% endblock styles %}
+{% block content %}
+<label> </label>
+<div >
+ <label for="MovieDate">Select Your Movie Date</label>
+<input type="date" id="MovieDate"   min="{{currentDate}}" max={{maxDate}} onchange = "onChange(event)" > 
+<button onclick="onClick()">Select</button>
+</div>
+
+
+
+
+ 
+{% endblock content %}
+
+{% block scripts %}
+
+
+let date = null ;
+const onChange = (event) => {
+    date = event.target.value;
+    console.log(date)
+    
+}
+const onClick=()=>{
+
+  console.log(window.location.href)
+  const currentUrl = window.location.href + date;
+  console.log(currentUrl)
+    window.location.href = currentUrl;
+
+}
+
+  
+{% endblock scripts %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block styles %}
+{% endblock styles %}
+{% block content %}
+<div class="container">
+<form class="form"   action="post" @prevent>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Promo Code </label>
+    <input type="text" class="form-control" id="PromoCodeInput" >   
+  </div>
+
+  <button type="submit" class="btn btn-primary " id="promobutton" onclick="submitButtonClick(event)">Submit</button>
+</form>
+<div>
+<button class="btn btn-outline-success btn-lg" > Book THe Show </button>
+{% endblock content %}
+{% block scripts %}
+let submitButton = document.getElementById('promobutton');
+async function submitButtonClick(event) {
+		event.preventDefault();
+    var promoCode = document.getElementById("PromoCodeInput").value;
+		console.log(promoCode);
+    const body = JSON.stringify({
+        promoCode: promoCode
+    });
+    const res = await axios.post('/promocode',body);
+    console.log(res);
+    if(res.status == 200){
+        alert("Promo Code Applied");
+        submitButton.disabled = true;
+        submitButton.innerHTML = "Promo Code Applied";
+        
+    }
+    else{
+        alert("Promo Code Not Applied");
+    }
+    
+} 
+
+{% endblock scripts %}

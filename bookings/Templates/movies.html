@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block styles %}
+
+.selectMovies{
+    height: 100vh;
+    width: 100vw;
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+li{
+    widht:100%;
+}
+
+{% endblock styles %}
+{% block content %}
+
+
+<div class="dropdown container selectMovies" style="">
+   <div class="input-group mb-3">
+
+   <select class="form-select " id="inputGroupSelect01">
+    <option selected>Choose Your Movie</option>
+    {% for movie in movies %}
+        <option value="{{count}}">{{movie.name}}</option>
+
+    {% endfor %}
+    
+  </select>
+  <button  class="btn btn-success" onclick="onClick()" >Submit</button>
+
+
+ 
+</div>
+
+  </div>
+
+{% endblock content %}
+{% block scripts %}
+
+const onClick =()=>{
+    let select = document.getElementById('inputGroupSelect01');
+    let option = select.options[select.selectedIndex];
+    console.log(option.text);
+    let url = `/movies/${option.text}`;
+    console.log(window.location.href)
+    window.location.href = url;
+}
+
+{% endblock scripts %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+
+
+{% for seat in seats %}
+<div class="form-check">
+{% if seat.isBooked %} <input class="form-check-input" disabled  type="checkbox" value="" id="flexCheckDefault">{% else %} <input class="form-check-input"  type="checkbox" name="checkbox" value="{{seat.id}}" id="flexCheckDefault">{% endif %}
+ 
+  <label class="form-check-label" for="flexCheckDefault">
+     Seat Number {{seat.number}}
+  </label>
+</div>
+{% endfor %}
+<button class ="btn btn-success" onclick="onClick()">Select Seat</button>
+{% endblock content %}
+{% block scripts %}
+const onClick=()=>{
+  let seat = document.getElementsByName('checkbox');
+  for (var checkbox of seat){
+    if (checkbox.checked){
+      const currentUrl = window.location.href +'/'+checkbox.value;
+  console.log(currentUrl)
+    window.location.href = currentUrl;
+    }
+  }
+  console.log(seat)
+
+}
+{% endblock scripts %}

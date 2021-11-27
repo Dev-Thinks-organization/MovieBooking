@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+
+
+{% for show  in shows %}
+
+<input type="radio" id="html" name="show" value="{{show.id}}">{{show.time}}</input>
+
+
+{% endfor %}
+<button class="btn btn-success" onclick="onClick()" type="submit">Select</button>
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+const onClick = () => {
+    var ele = document.getElementsByName('show');
+  for(i = 0; i < ele.length; i++) {
+                if(ele[i].checked){
+                    console.log(ele[i].value)
+                     console.log(window.location.href)
+  const currentUrl = window.location.href + ele[i].value;
+  console.log(currentUrl)
+    window.location.href = currentUrl;
+                }
+              
+            }
+    }
+
+{% endblock scripts %}
