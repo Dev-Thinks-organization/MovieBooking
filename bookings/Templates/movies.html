@@ -12,16 +12,19 @@
 li{
     widht:100%;
 }
+.selectMovieText{
+  margin-right: 10px;
+}
 
 {% endblock styles %}
 {% block content %}
 
 
 <div class="dropdown container selectMovies" style="">
-   <div class="input-group mb-3">
-
-   <select class="form-select " id="inputGroupSelect01">
-    <option selected>Choose Your Movie</option>
+   <div class="input-group mb-3" >
+<h2 class="selectMovieText">Select a movie</h2> 
+   <select class="form-select ml-3 " name="selectMovies" id="inputGroupSelect01" >
+   
     {% for movie in movies %}
         <option value="{{count}}">{{movie.name}}</option>
 

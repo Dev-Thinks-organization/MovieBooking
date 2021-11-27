@@ -17,13 +17,18 @@
 {% block scripts %}
 const onClick=()=>{
   let seat = document.getElementsByName('checkbox');
+   let seatNumber ="" ;
   for (var checkbox of seat){
     if (checkbox.checked){
-      const currentUrl = window.location.href +'/'+checkbox.value;
-  console.log(currentUrl)
-    window.location.href = currentUrl;
+      seatNumber += checkbox.value+"," ;
+      
+
+
     }
   }
+  console.log();
+let currentUrl = `${window.location.href}/${seatNumber.slice(0,-1)}/`;
+      window.location.href = currentUrl;
   console.log(seat)
 
 }

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+
+
+
+
+{% if exist %}
+<h1>Sorry this booking is already made </h1>
+{% else %}
+<h2>You have reserved {{booking.movie}} for {{booking.show.date}} at {{booking.show.time}}</h2>
+<h3>Your booking number is {{booking.id}}</h3>
+{% endif %}
+<a href ="/">
+<button class="bnt bnt-outline btn-lg" >Book another show</button></a>
+
+
+{% endblock content %}
+
+{% block scripts %}{% endblock scripts %}

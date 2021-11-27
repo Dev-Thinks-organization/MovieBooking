@@ -1,3 +1,4 @@
+from django.utils import timezone
 import json
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -5,7 +6,7 @@ import datetime
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import ListView, DetailView, View
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from.models import *
 # Create your views here.
 
@@ -14,6 +15,8 @@ class MovieList(View):
     """View to show a dropdown of movies """
 
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/auth/login/')
         movies = Movie.objects.all()
         return render(request, 'movies.html', {'movies': movies})
 
@@ -63,19 +66,43 @@ class Booking(View):
         return render(request, 'booking.html')
 
     def post(self, request, **args):
-        return HttpResponse("Booking")
+        context = {}
+        seat = args.get('seat')
+        print(seat.split(','))
+        show = args.get('time')
+        show = Show.objects.get(id=int(show))
+        for s in seat.split(','):
+            seats = Seat.objects.get(number=s, show=show)
+            seats.isBooked = True
+            seats.save()
+        movieName = args.get('name')
+        date = args.get('date')
+
+        movie = Movie.objects.get(name=movieName)
+        user = User.objects.get(id=request.user.id)
+
+        try:
+            booking = Bookings.objects.create(
+                movie=movie, show=show, user=user)
+            booking.save()
+            context['exist'] = False
+            context['booking'] = booking
+        except Exception as e:
+            context['exist'] = True
+
+        return render(request, 'BookingSuccess.html', context)
 
 
 class SelectSeats(View):
     def get(self, request, **args):
-        time = args.get('time')
+        seat = args.get('seat')
         name = args.get('name')
         date = args.get('date')
         context = {}
         movie = Movie.objects.get(name=name)
         now_time = datetime.time()
-        print(time)
-        show = Show.objects.get(id=int(time))
+
+        show = Show.objects.get(id=int(seat))
         print(show)
         seats = Seat.objects.filter(show=show)
         print(seats)
@@ -91,9 +118,16 @@ class PromoCodes(View):
         print(promocode)
 
         code = PromoCode.objects.filter(code=promocode).first()
-        print
-        if(code.is_active):
-            return JsonResponse('Promo code is valid', status=200)
+        time = timezone.now()
+
+        if(code and code.usedTimes >= 1):
+            if (code.end < time):
+                print("the code has expired")
+                return JsonResponse({'error': 'Promo code is Expired'}, status=304)
+            code.usedTimes = code.usedTimes - 1
+            code.save()
+            return JsonResponse({'DONE': "Promo code is valid"}, status=200)
         else:
-            return JsonResponse({'error': 'Promo code is not valid'}, status=400)
+            print("the code is not valid")
+            return JsonResponse({'error': 'Promo code is not valid'}, status=304)
         # return JsonResponse({'error': 'Promo code is not valid'}, status=400)

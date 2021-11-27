@@ -9,8 +9,9 @@
     {% csrf_token %}
         
         <input name="email" type="email" placeholder="email">
-        <input name="password" type="passowrd" placeholder="password">
+        <input name="password" type="password" placeholder="password">
         <button type="submit">Submit </button>
     </form>
+    <a href="/auth/login/">Already have an account?</a>
 </div>
 {% endblock content %}

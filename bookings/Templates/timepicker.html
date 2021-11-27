@@ -22,7 +22,7 @@ const onClick = () => {
                 if(ele[i].checked){
                     console.log(ele[i].value)
                      console.log(window.location.href)
-  const currentUrl = window.location.href + ele[i].value;
+  const currentUrl = `${window.location.href}${ele[i].value}`;
   console.log(currentUrl)
     window.location.href = currentUrl;
                 }

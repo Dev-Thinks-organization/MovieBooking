@@ -7,9 +7,11 @@
     <form action="{% url 'users:login' %}" method="post">
     {% csrf_token %}
         <input name="email" type="email"placeholder="email">
-        <input name="password" type="passowrd" placeholder="password">
+        <input name="password" type="password" placeholder="password">
         <button type="submit">Submit </button>
     </form>
+        <a href="/auth/register">Not a user SignUp</a>
+
 </div>
 
 {% endblock content %}

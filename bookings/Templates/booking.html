@@ -6,16 +6,22 @@
 <form class="form"   action="post" @prevent>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Promo Code </label>
-    <input type="text" class="form-control" id="PromoCodeInput" >   
+    <input type="text" class="form-control" id="PromoCodeInput" >  
+     <p id="buttonHelpText">Click on the button to get the discount</p>
   </div>
 
   <button type="submit" class="btn btn-primary " id="promobutton" onclick="submitButtonClick(event)">Submit</button>
 </form>
 <div>
-<button class="btn btn-outline-success btn-lg" > Book THe Show </button>
+<form class="form" method="POST" action="">
+{% csrf_token %}
+<button class="btn btn-outline-success btn-lg" type="submit" > Book The Show </button>
+
+</form>
 {% endblock content %}
 {% block scripts %}
 let submitButton = document.getElementById('promobutton');
+let buttonHelpText = document.getElementById('buttonHelpText');
 async function submitButtonClick(event) {
 		event.preventDefault();
     var promoCode = document.getElementById("PromoCodeInput").value;
@@ -23,17 +29,21 @@ async function submitButtonClick(event) {
     const body = JSON.stringify({
         promoCode: promoCode
     });
-    const res = await axios.post('/promocode',body);
-    console.log(res);
-    if(res.status == 200){
+    try{
+ const res = await axios.post('/promocode',body);
+ if(res.status == 200){
         alert("Promo Code Applied");
-        submitButton.disabled = true;
-        submitButton.innerHTML = "Promo Code Applied";
+        
+        buttonHelpText.innerHTML = "Promo Code Applied";
         
     }
-    else{
-        alert("Promo Code Not Applied");
+    }catch(error){
+        console.log(error);
+        alert("Promo Code Not Valid")
+                buttonHelpText.innerHTML = "Promo Code Not Applied";
     }
+   
+
     
 } 
 
